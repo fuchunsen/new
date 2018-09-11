@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+</head>
+<style>
+	.link{
+  display: block;
+  width: 100px;
+  height: 80px;
+  background-color: #00beff;
+  color: #fff;
+  text-align:center;
+  line-height:80px;
+  margin-bottom:10px;
+  outline: none;
+  text-decoration: none;
+  border: 8px solid #b5e7f9;
+}
+.link.love {
+  background-color: #fe4583;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-left: -100px;  
+  margin-top: -40px;
+  border: 8px solid #f596b6;
+}
+.link.unlove {
+  position:absolute;
+  top: 50%;
+  margin-top: -40px;
+  left:50%;
+  margin-left: 100px;
+  transition: all .2s ease-in-out;
+}
+.unlove.move {
+  top: 30%;
+  left: 40%;
+}
+</style>
+<body>
+	<div>
+	  	<a class="link love" href="javascript:;">喜欢</a>
+	  	<a class="link unlove" href="javascript:;">不喜欢</a>
+	</div>
+</body>
+<script>
+	$(function (){
+  // var $unlove = $('.unlove');
+  $('.love').click(function (){
+    console.log($('.unlove'))
+    var $unlove = $('.unlove');
+    $unlove.addClass('move');
+    alert('我也喜欢你~真是太开心了！');
+  })
+  $('.unlove').mouseenter(function (){
+    // console.log($('.unlove').style.top)
+    var $unlove = $(this);
+    var theX = $unlove[0].offsetTop;
+    var theY = $unlove[0].offsetLeft;
+    console.log($('body,html')[0].clientHeight)    
+    console.log(theY)
+    // $unlove.addClass('move');
+    // $unlove.style.top = theX + 30
+    // $unlove.addClass('move');
+    var topmax = $('body,html')[0].clientHeight - 200;
+    var topmin = 10;
+    var leftmax = $('body,html')[0].clientWidth - 200;
+    var leftmin = 10;
+    $unlove.css({
+      top: Math.floor(Math.random()*(topmax-topmin+1)+topmin),
+      left: Math.floor(Math.random()*(leftmax-leftmin+1)+leftmin)
+    })
+
+  })
+})
+</script>
+</html>

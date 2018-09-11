@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+</head>
+<style>
+	body,
+    p,
+    ol,
+    ul,
+    li,
+    dl,
+    dd,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    h6,
+    input,
+    iframe,
+    nav,
+    header,
+    footer {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    body {
+      font: 16px Microsoft YaHei, sans-serif;
+      color: #2a2b2c;
+      background: transparent url(http://wx4.sinaimg.cn/large/bea70753gy1fqbe4xs85tj200a00a3yp.jpg);
+    }
+
+    a {
+      text-decoration: none;
+      color: #2a2b2c;
+    }
+
+    img {
+      display: block;
+      border-style: none;
+    }
+
+    *,
+    *::before,
+    *::after {
+      outline: none;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      height: 100%;
+      user-select: none;
+    }
+
+    .d1 {
+      text-align: center;
+      font: 16px/60px Microsoft YaHei;
+      color: #666;
+    }
+
+    .wrapper {
+      height: 100%;
+      position: relative;
+    }
+
+    #smartoo {
+      width: 10px;
+      height: 10px;
+      border-radius: 55%;
+      background: #00b7ee;
+      box-shadow: 0 0 5px #31b4e6, 0 0 20px #60c5e6;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      margin-top: -5px;
+      margin-left: -5px;
+      z-index: 99999;
+      transition: .2s ease-in-out;
+    }
+
+    .force {
+      width:50px;
+      height:50px;
+      border-radius: 55%;
+      border: 1px dashed #f66;
+      position: absolute;
+      z-index: 4;
+      animation: anim1 .35s both;
+    }
+    .p_desc {
+      text-align: center;
+      color: #aaaaaa;
+      font-size: 12px;
+    }
+    @keyframes anim1 {
+      0% {
+        transform: scale(0);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+</style>
+<body>
+	<div class="wrapper">
+	    <div class="d1">smartoo 1.4</div>
+	    <p class="p_desc">点击任意位置</p>
+	    <div id="smartoo"></div>
+	</div>
+</body>
+<script>
+	$(function () {
+      var _cfg = {
+        element: '#smartoo', // must 
+
+        moveLen: '20, 20', // 移动距离 number or str '1, 200'
+        randomBgColor: false, // 随机颜色 bool
+        randZoom: '3, 3', // 缩放 str  '10, 100'
+        isInit: true, // isInit  default: true
+        isOutside: false, // 是否允许移动到页面之外
+        isAutoMove: true, // 是否开启自动移动
+        moveTime: 400, // 自动移动的时间间隔
+        isRandCoords: false, // 是否随机坐标
+      }
+
+      var el = $(_cfg.element);
+      var timer;
+      var times;
+      var win = {
+          w: window.innerWidth,
+          h: window.innerHeight
+        }
+
+        // 初始化
+        !function () {
+          if (typeof _cfg.isInit === 'undefined') {
+            init();
+          } else {
+            _cfg.isInit && init();
+          }
+        }();
+
+      // 初始化函数
+      function init() {
+        if (_cfg.isAutoMove) {
+          timer = setInterval(function () {
+            setCoords();
+            $(document).keydown();
+          }, _cfg.moveTime || 1e3);
+        }
+        $(document).on('keydown', function (e) {
+          switch (e.which) {
+            case 37:
+              moveDir('l');
+              break;
+
+            case 38:
+              moveDir('t');
+              break;
+
+            case 39:
+              moveDir('r');
+              break;
+
+            case 40:
+              moveDir('b');
+              break;
+
+            case 32:
+              clearInterval(timer);
+              break;
+          }
+
+          _cfg.randomBgColor && setBgColor();
+
+          if (_cfg.randZoom) {
+            var v = _cfg.randZoom.split(',');
+            randZoom.apply(this, v);
+          }
+        });
+      }
+
+      // 设置坐标 fcx, fcy为寻觅目标force的坐标
+      function setCoords(fcx, fcy) {
+        var x = randInt(0, window.innerWidth);
+        var y = randInt(0, window.innerHeight);
+        var dirAry = ['top', 'left'];
+        var dir = dirAry[Math.floor(Math.random() * dirAry.length)];
+        var coord = +el.css(dir).replace(/px/, '');
+        var ds = randInt(0, 1) ? dist() : -dist();
+        if (_cfg.isRandCoords) {
+          el.css({
+            top: x + 'px',
+            left: y + 'px'
+          })
+        } else {
+          // 如果有目标则逐渐向目标处移动
+          if (fcx && fcy) {
+            let mine = getCoords(_cfg.element);
+            let dis = dist();
+            // 和最终目标坐标的差值绝对值
+            let mx = Math.abs(mine.x - fcx);
+            let my = Math.abs(mine.y - fcy);
+            
+            // 斜边长
+            let hypotenuse = Math.sqrt(Math.pow(mx,2) + Math.pow(my,2));
+            
+            // 到下一个位置x和y的距离
+            let ndX = dis * (mx/hypotenuse);
+            let ndY = dis * (my/hypotenuse);
+            
+            // 下一个位置的坐标
+            let nextX = fcx > mine.x ? (mine.x + ndX) : (mine.x - ndX);
+            let nextY = fcy > mine.y ? (mine.y + ndY) : (mine.y - ndY);
+            
+            // 设置概率, 距离目标越近靠近的几率越大反之越小
+            let probability = 1/(hypotenuse/60);
+            
+            // 近到一定距离的时候随机移动(不再强制吸引)
+            let sd = hypotenuse < 20;
+            
+            if (setProb(true, probability) && !sd) {
+              $('.p_desc').text('靠近概率 : ' + probability.toString().slice(0, 6));
+              el.css({
+                'top': Math.round(nextY) + 'px',
+                'left': Math.round(nextX) + 'px'
+              })
+            } else {
+              el.css(dir, coord += ds);
+            }
+          } else {
+            el.css(dir, coord += ds);
+          }
+        }
+
+        if (!_cfg.isOutside) {
+          setTimeout(function () {
+            var w = el.width(),
+              h = el.height(),
+              _ol = el.offset().left,
+              _ot = el.offset().top,
+              _ofl = Math.abs(el.offset().left),
+              _oft = Math.abs(el.offset().top);
+            if (win.w - (_ofl + w) < 0) {
+              el.css('left', (win.w - w) + 'px');
+            }
+
+            if (win.h - (_oft + h) < 0) {
+              el.css('top', (win.h - h) + 'px');
+            }
+
+            if (_ol < 0) {
+              el.css('left', 0);
+            }
+
+            if (_ot < 0) {
+              el.css('top', 0);
+            }
+          }, 100);
+        }
+
+      }
+
+      // 随机缩放
+      function randZoom(w = 0, h = 0) {
+        var rNum = randInt(w, h);
+        el.css({
+          width: rNum,
+          height: rNum
+        })
+      }
+
+      // 随机整数
+      function randInt(m = 80, n = 80) {
+        m = +m;
+        n = +n;
+        return Math.floor((Math.random() * (n - m + 1)) + m);
+      }
+
+      // 随机颜色
+      function randomColor() {
+        return "#" + ("00000" + ((Math.random() * 16777215 + 0.5) >> 0).toString(16)).slice(-6);
+      }
+
+      // 设置背景色
+      function setBgColor() {
+        var bg = randomColor();
+        el.css('background-color', bg);
+      }
+
+      // 移动距离
+      function dist() {
+        var ary;
+        if (typeof _cfg.moveLen === 'undefined') {
+          return 100;
+        } else {
+          if (!isNaN(_cfg.moveLen)) {
+            return _cfg.moveLen;
+          } else {
+            ary = _cfg.moveLen.split(',');
+            return randInt.apply(this, ary);
+          }
+        }
+      }
+
+      // 上下移动
+      function move_t(len) {
+        el.css('top', len + 'px');
+      }
+
+      // 左右移动
+      function move_l(len) {
+        el.css('left', len + 'px');
+      }
+
+      // 判断移动方向
+      function moveDir(dir) {
+        var topLen = +el.css('top').replace('px', '');
+        var leftLen = +el.css('left').replace('px', '');
+        var l = dist();
+        switch (dir) {
+          case 't':
+            topLen -= l;
+            move_t(topLen);
+            break;
+
+          case 'r':
+            leftLen += l;
+            move_l(leftLen);
+            break;
+
+          case 'b':
+            topLen += l;
+            move_t(topLen);
+            break;
+
+          case 'l':
+            leftLen -= l;
+            move_l(leftLen);
+            break;
+        }
+      }
+
+      // 获取元素坐标
+      function getCoords(ele) {
+        ele = $('body').find(ele);
+        let w = ele.outerWidth();
+        let h = ele.outerHeight();
+        let x = +ele.css('left').replace(/[a-z]+/, '') + (+w / 2);
+        let y = +ele.css('top').replace(/[a-z]+/, '') + (+h / 2);
+        return {
+          x: ~~x,
+          y: ~~y
+        }
+      }
+
+      // 设置传入参数的概率
+      function setProb(inps, prob = 0) {
+        function rand() {
+          return Math.floor((Math.random() * (1e4 - 1 + 1)) + 1);
+        }
+        if (prob < rand() / 1e4) {
+          return false;
+        }
+        return inps;
+      }
+
+      $('.wrapper').on('click', function (e) {
+        var that = $(this);
+        $('body').find('.force').remove();
+        that.append('<div class="force"></div>');
+        $('.p_desc').text('靠近概率 : 0.001');        
+        let force = $('.force');
+        let h = force.outerHeight();
+        force.css({
+          top: e.pageY - h / 2,
+          left: e.pageX - h / 2
+        })
+        clearInterval(timer);
+        clearInterval(times);
+
+        let fc = getCoords('.force');
+        times = setInterval(() => {
+          setCoords(fc.x, fc.y);
+        }, _cfg.moveTime || 1e3);
+      });
+    });
+</script>
+</html>
