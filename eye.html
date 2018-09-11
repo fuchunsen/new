@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Lato">
+</head>
+<style>
+* {
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  -webkit-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+}
+body {
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #111;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  font-family: 'Lato', sans-serif;
+  height: 100vh;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  overflow: hidden;
+  margin: 0;
+  padding: 0;
+  width: 100vw;
+}
+:root {
+  --animation-speed: 2;
+  --base-size: 2.5vh;
+  --inner-primary-color: #fff;
+  --inner-secondary-color: #000;
+  --inner-length: 7;
+  --outer-primary-color: #fff;
+  --outer-secondary-color: #000;
+  --outer-length: 7;
+}
+.circle {
+  border-radius: 50%;
+  height: 100%;
+  position: absolute;
+  width: 100%;
+}
+.inner {
+  height: calc(var(--inner-length) * var(--base-size));
+  left: 50%;
+  margin-left: calc((var(--inner-length) * var(--base-size)) / -2);
+  position: absolute;
+  width: calc(var(--inner-length) * var(--base-size));
+}
+.inner > .circle:nth-child(1) {
+  background-color: var(--inner-secondary-color);
+  -webkit-transform: scale(0.142857142857143);
+          transform: scale(0.142857142857143);
+  -webkit-transform-origin: center calc((var(--inner-length) * var(--base-size)) - (var(--base-size) * 0.25));
+          transform-origin: center calc((var(--inner-length) * var(--base-size)) - (var(--base-size) * 0.25));
+  z-index: 14;
+}
+.inner > .circle:nth-child(2) {
+  background-color: var(--inner-primary-color);
+  -webkit-transform: scale(0.285714285714286);
+          transform: scale(0.285714285714286);
+  -webkit-transform-origin: bottom center;
+          transform-origin: bottom center;
+  z-index: 13;
+}
+.inner > .circle:nth-child(3) {
+  background-color: var(--inner-secondary-color);
+  -webkit-transform: scale(0.428571428571429);
+          transform: scale(0.428571428571429);
+  -webkit-transform-origin: bottom center;
+          transform-origin: bottom center;
+  z-index: 12;
+}
+.inner > .circle:nth-child(4) {
+  background-color: var(--inner-primary-color);
+  -webkit-transform: scale(0.571428571428571);
+          transform: scale(0.571428571428571);
+  -webkit-transform-origin: bottom center;
+          transform-origin: bottom center;
+  z-index: 11;
+}
+.inner > .circle:nth-child(5) {
+  background-color: var(--inner-secondary-color);
+  -webkit-transform: scale(0.714285714285714);
+          transform: scale(0.714285714285714);
+  -webkit-transform-origin: bottom center;
+          transform-origin: bottom center;
+  z-index: 10;
+}
+.inner > .circle:nth-child(6) {
+  background-color: var(--inner-primary-color);
+  -webkit-transform: scale(0.857142857142857);
+          transform: scale(0.857142857142857);
+  -webkit-transform-origin: bottom center;
+          transform-origin: bottom center;
+  z-index: 9;
+}
+.inner > .circle:nth-child(7) {
+  background-color: var(--inner-secondary-color);
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  -webkit-transform-origin: bottom center;
+          transform-origin: bottom center;
+  z-index: 8;
+}
+.outer {
+  -webkit-animation: rotate calc(var(--animation-speed) * 1s) infinite linear;
+          animation: rotate calc(var(--animation-speed) * 1s) infinite linear;
+  position: relative;
+  height: calc((var(--inner-length) + var(--outer-length)) * var(--base-size));
+  width: calc((var(--inner-length) + var(--outer-length)) * var(--base-size));
+}
+.outer > .circle:nth-child(1) {
+  background-color: var(--outer-primary-color);
+  -webkit-transform: scale(0.571428571428571);
+          transform: scale(0.571428571428571);
+  -webkit-transform-origin: top center;
+          transform-origin: top center;
+  z-index: 7;
+}
+.outer > .circle:nth-child(2) {
+  background-color: var(--outer-secondary-color);
+  -webkit-transform: scale(0.642857142857143);
+          transform: scale(0.642857142857143);
+  -webkit-transform-origin: top center;
+          transform-origin: top center;
+  z-index: 6;
+}
+.outer > .circle:nth-child(3) {
+  background-color: var(--outer-primary-color);
+  -webkit-transform: scale(0.714285714285714);
+          transform: scale(0.714285714285714);
+  -webkit-transform-origin: top center;
+          transform-origin: top center;
+  z-index: 5;
+}
+.outer > .circle:nth-child(4) {
+  background-color: var(--outer-secondary-color);
+  -webkit-transform: scale(0.785714285714286);
+          transform: scale(0.785714285714286);
+  -webkit-transform-origin: top center;
+          transform-origin: top center;
+  z-index: 4;
+}
+.outer > .circle:nth-child(5) {
+  background-color: var(--outer-primary-color);
+  -webkit-transform: scale(0.857142857142857);
+          transform: scale(0.857142857142857);
+  -webkit-transform-origin: top center;
+          transform-origin: top center;
+  z-index: 3;
+}
+.outer > .circle:nth-child(6) {
+  background-color: var(--outer-secondary-color);
+  -webkit-transform: scale(0.928571428571429);
+          transform: scale(0.928571428571429);
+  -webkit-transform-origin: top center;
+          transform-origin: top center;
+  z-index: 2;
+}
+.outer > .circle:nth-child(7) {
+  background-color: var(--outer-primary-color);
+  -webkit-transform: scale(1);
+          transform: scale(1);
+  -webkit-transform-origin: var(--base-size) center;
+          transform-origin: var(--base-size) center;
+  z-index: 1;
+}
+.options {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+}
+.options:checked {
+  -webkit-transform: translateX(130px);
+          transform: translateX(130px);
+}
+.options:checked ~ .options-menu {
+  -webkit-transform: translateX(0%);
+          transform: translateX(0%);
+}
+.options:checked ~ .options-label {
+  -webkit-transform: translateX(130px);
+          transform: translateX(130px);
+}
+.options:checked ~ .options-label span {
+  opacity: 0;
+}
+.options:checked ~ .options-label:after {
+  -webkit-transform: translate(-50%, -50%) rotate(45deg);
+          transform: translate(-50%, -50%) rotate(45deg);
+}
+.options:checked ~ .options-label:before {
+  -webkit-transform: translate(-50%, -50%) rotate(-45deg);
+          transform: translate(-50%, -50%) rotate(-45deg);
+}
+[type=checkbox] {
+  visibility: hidden;
+}
+.options-label {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  height: 50px;
+  width: 50px;
+}
+.options-label span {
+  width: 65%;
+  height: 15%;
+  background-color: #fff;
+  display: block;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+.options-label:before,
+.options-label:after {
+  content: '';
+  width: 65%;
+  height: 15%;
+  background-color: #fff;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+.options-label:before {
+  -webkit-transform: translate(-50%, -215%);
+          transform: translate(-50%, -215%);
+}
+.options-label:after {
+  -webkit-transform: translate(-50%, 115%);
+          transform: translate(-50%, 115%);
+}
+.options-menu {
+  color: #fff;
+  position: absolute;
+  top: 0;
+  left: 0;
+  -webkit-transform: translateX(-100%);
+          transform: translateX(-100%);
+  padding: 10px;
+  width: 130px;
+}
+.options-menu__group {
+  margin-bottom: 10px;
+}
+.options-menu [type=range] {
+  width: 100px;
+}
+.options-menu label {
+  display: block;
+}
+@-webkit-keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+@keyframes rotate {
+  from {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  to {
+    -webkit-transform: rotate(360deg);
+            transform: rotate(360deg);
+  }
+}
+</style>
+<body>
+	<div class="outer">
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="circle"></div>
+  <div class="inner">
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+    <div class="circle"></div>
+  </div>
+</div>
+<div class="options-container">
+  <input class="options" type="checkbox" id="menu-btn"/>
+  <label class="options-label" for="menu-btn"><span></span></label>
+  <div class="options-menu">
+    <div class="options-menu__group">
+      <label for="animation-speed">Speed</label>
+      <input id="animation-speed" type="range" min="0.5" max="10" step="0.5" value="2"/>
+    </div>
+    <div class="options-menu__group">
+      <label for="inner-primary-color">Color one</label>
+      <input id="inner-primary-color" type="color" value="#ffffff"/>
+    </div>
+    <div class="options-menu__group">
+      <label for="inner-secondary-color">Color two</label>
+      <input id="inner-secondary-color" type="color" value="#000000"/>
+    </div>
+    <div class="options-menu__group">
+      <label for="outer-primary-color">Color three</label>
+      <input id="outer-primary-color" type="color" value="#ffffff"/>
+    </div>
+    <div class="options-menu__group">
+      <label for="outer-secondary-color">Color four</label>
+      <input id="outer-secondary-color" type="color" value="#000000"/>
+    </div>
+  </div>
+</div>
+</body>
+<script>
+	const root = document.documentElement
+const inputs = document.querySelectorAll('input')
+
+const update = (e) => {
+  root.style.setProperty(`--${e.target.id}`, e.target.value)
+}
+
+inputs.forEach((input) => input.addEventListener('input', update))
+</script>
+</html>
